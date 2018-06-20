@@ -1,0 +1,12 @@
+header {
+  padding: 40px 0 40px;
+}
+
+.bg-primary>div>.lead>a {
+  color: white;
+  text-decoration: underline;
+}
+
+section {
+  padding: 150px 0;
+}
