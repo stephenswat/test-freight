@@ -26,6 +26,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'test_freight.urls'
 
+AUTHENTICATION_BACKENDS = [
+    'eve_auth.backend.EveAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

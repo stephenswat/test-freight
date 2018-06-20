@@ -1,4 +1,5 @@
 import itertools
+import datetime
 from esipy.exceptions import APIException
 
 from django.conf import settings
@@ -29,7 +30,7 @@ class Character(models.Model):
             'refresh_token': self.refresh_token,
             'expires_in': (
                 self.token_expiry -
-                datetime.datetime.now(datetime.timezone.utc)
+                datetime.datetime.utcnow()
             ).total_seconds(),
             'token_type': 'Bearer',
         }
@@ -39,7 +40,7 @@ class Character(models.Model):
         self.access_token = token['access_token']
         self.refresh_token = token['refresh_token']
         self.token_expiry = (
-            datetime.datetime.now(datetime.timezone.utc) +
+            datetime.datetime.utcnow() +
             datetime.timedelta(seconds=token['expires_in'])
         )
 
