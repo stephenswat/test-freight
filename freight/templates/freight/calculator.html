@@ -1,0 +1,102 @@
+{% extends "freight/base.html" %}
+
+{% block content %}
+<header class="bg-primary text-white">
+    <div class="container text-center">
+    <h1>Reward Calculator</h1>
+    <p class="lead">Cheapest rates in all of New Eden guaranteed*</p>
+    </div>
+</header>
+
+
+<section id="about">
+    <div class="container">
+        <div class="alert alert-danger">
+          <strong>Danger!</strong> Do not include containers of any kind in your contract!
+        </div>
+
+        <div class="row" style="margin:10px;">
+        <div class="col-sm-2">Route:</div>
+        <div class="col-sm-6">
+
+        <select name="route" id="route" class="form-control">
+            {% for r in routes %}
+            <option value="{{ r.price_per_m3 }}">{{ r.start.short_name }} &rightarrow; {{ r.end.short_name }} ({{ r.price_per_m3 }} ISK/m&sup3;)</option>
+            {% endfor %}
+        </select>
+        </div>
+        </div>
+
+        <div class="row" style="margin:10px;">
+        <div class="col-sm-2">Contract Size:</div>
+        <div class="col-sm-6">
+            <input type="text" id="m3" class="form-control" value="0" />
+        </div>
+        <div class="col-sm-4">(300k max | 60k recomended)</div>
+        </div>
+
+        <div class="row" style="margin:10px;">
+        <div class="col-sm-2">Collateral:</div>
+        <div class="col-sm-6">
+            <input type="text" id="collat" class="form-control" value="0" />
+        </div>
+        <div class="col-sm-4">(Less than 5B recommended)</div>
+        </div>
+
+        <dl>
+            <dt>Reward</dt>
+            <dd id="reward">0 ISK</dd>
+            <dt>Recommendations</dt>
+            <dd id="recomendation"></dd>
+        </dl>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+<script>
+function collateral() {
+    var collateralRate = 0.01;
+    var maxSize = 300000;
+    var recomendedCollateral = 5000000000;
+    var recomendedSize = 5000000000;
+
+    var m3Rate = parseInt($("#route").val());
+    var size = parseFloat($("#m3").val());
+    var collateral = parseFloat($("#collat").val());
+
+    var reward = (m3Rate * size) + (collateral * collateralRate);
+    var min_word = (5000000/1000000).toFixed(2) + " Million ISK";
+
+    if (reward > 1000000000 || size > maxSize) {
+        document.getElementById("reward").innerHTML = "The fuck are you trying to move?  A Titan?";
+        document.getElementById("recomendation").innerHTML = "Split your contract nerd";
+    } else if (reward > 5000000) {
+        document.getElementById("reward").innerHTML = reward.toFixed(2).toString() + " (" + (reward.toFixed(2)/1000000).toFixed(2) + " Million ISK) ";
+        document.getElementById("recomendation").innerHTML = "None, go for it!";
+    } else {
+        document.getElementById("reward").innerHTML = "5000000" + "(" + min_word + ")";
+        document.getElementById("recomendation").innerHTML = "Come on now, ain't nobody got time to move your shit for less than " + min_word;
+    }
+
+    if (size > recomendedSize){
+        document.getElementById("recomendation").innerHTML = "Consider splitting your contract into chunks of less than 60k m3 for faster service.";
+    }
+
+    if (collateral > recomendedCollateral){
+        document.getElementById("recomendation").innerHTML = "Consider splitting your contract into chunks of less than 5b collateral for faster service.";
+    }
+
+    if (isNaN(collateral) || isNaN(size)){
+        document.getElementById("reward").innerHTML = "";
+        document.getElementById("recomendation").innerHTML = "Please try filling in all the fields, it's the least you can do after all";
+    }
+}
+
+$("#route").on("input", null, null, collateral);
+$("#m3").on("input", null, null, collateral);
+$("#collat").on("input", null, null, collateral);
+
+collateral();
+</script>
+{% endblock %}
