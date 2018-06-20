@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic.base import View
 from django.shortcuts import redirect, render
 
@@ -13,13 +14,18 @@ class StandardLogin(View):
         )
 
 
-class ScraperLogin(View):
+class ScraperLogin(UserPassesTestMixin, View):
     def get(self, request):
         return redirect(
             ESI.get_security().get_auth_uri(scopes=[
                 'esi-contracts.read_character_contracts.v1'
             ])
         )
+
+    def test_func(self):
+        # TODO: It may be possible for users to forge this by modifying the
+        # redirect URL returned by this view.
+        return self.request.user.is_superuser
 
 
 
