@@ -27,8 +27,8 @@
     <tbody>
         {% for c in contracts %}
         <tr>
-            <td>{{ c.start.short_name }}</td>
-            <td>{{ c.end.short_name }}</td>
+            <td>{{ c.start.short_name|default:"Unknown" }}</td>
+            <td>{{ c.end.short_name|default:"Unknown" }}</td>
             <td data-sort="{{ c.reward }}">{{ c.reward|intword }}</td>
             <td data-sort="{{ c.collateral }}">{{ c.collateral|intword }}</td>
             <td>{{ c.days_to_complete }}</td>
