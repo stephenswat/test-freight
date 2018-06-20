@@ -28,11 +28,17 @@ class Character(models.Model):
 
     objects = CharacterManager()
 
+    def __str__(self):
+        return self.name
+
 
 class Location(models.Model):
     id = models.BigIntegerField(primary_key=True)
     full_name = models.CharField(max_length=64)
     short_name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.short_name
 
 
 class Contract(models.Model):
@@ -117,3 +123,24 @@ class Contract(models.Model):
         related_name='end_contracts',
         db_constraint=False
     )
+
+    @property
+    def start(self):
+        try:
+            return self.start_location
+        except Location.DoesNotExist:
+            return None
+
+    @property
+    def end(self):
+        try:
+            return self.end_location
+        except Location.DoesNotExist:
+            return None
+
+    def __str__(self):
+        return "{org} to {dst} ({volume} m3)".format(
+            org=self.start.short_name if self.start is not None else 'Unknown',
+            dst=self.end.short_name if self.end is not None else 'Unknown',
+            volume=self.volume
+        )
