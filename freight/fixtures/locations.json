@@ -1,0 +1,42 @@
+[
+{
+    "model": "freight.location",
+    "pk": 60003760,
+    "fields": {
+        "full_name": "Jita IV - Moon 4 - Caldari Navy Assembly Plant",
+        "short_name": "Jita"
+    }
+},
+{
+    "model": "freight.location",
+    "pk": 60008494,
+    "fields": {
+        "full_name": "Amarr VIII (Oris) - Emperor Family Academy",
+        "short_name": "Amarr"
+    }
+},
+{
+    "model": "freight.location",
+    "pk": 1024004680659,
+    "fields": {
+        "full_name": "D-PNP9 - D-Pyongyang",
+        "short_name": "D-PNP9  Keepstar"
+    }
+},
+{
+    "model": "freight.location",
+    "pk": 1026293932410,
+    "fields": {
+        "full_name": "U-QVWD - SUADSTAR",
+        "short_name": "U-QVWD Keepstar"
+    }
+},
+{
+    "model": "freight.location",
+    "pk": 1027950728006,
+    "fields": {
+        "full_name": "DY-P7Q - B0RTSTAR One - Ferret Fortress",
+        "short_name": "DY-P7Q Keepstar"
+    }
+}
+]
