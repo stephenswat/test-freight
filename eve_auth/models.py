@@ -63,5 +63,10 @@ class Character(models.Model):
     def get_client(self):
         return ESI.get_client(self.get_security())
 
+    def open_contract(self, contract_id):
+        self.get_client().request(
+            ESI['post_ui_openwindow_contract'](contract_id=contract_id)
+        )
+
     class KeyDeletedException(Exception):
         pass

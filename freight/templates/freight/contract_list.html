@@ -34,7 +34,7 @@
             <td>{{ c.days_to_complete }}</td>
             <td data-sort="{{ c.date_expired|date:'c' }}">{{ c.date_expired|naturaltime }}</td>
             <td>{{ c.issuer.name }}</td>
-            <td><button type="button" class="btn btn-primary">In-game</button></td>
+            <td><button type="button" class="btn btn-primary" onclick="view_contract({{ c.id }});">In-game</button></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -50,5 +50,10 @@ $(document).ready( function () {
         "pageLength": 100
     });
 } );
+
+function view_contract(cid) {
+    // HACK: Wow this is disgusting.
+    $.post("{% url 'freight:ingame_contract' 111111111 %}".replace("111111111", cid));
+}
 </script>
 {% endblock %}
