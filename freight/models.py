@@ -1,9 +1,32 @@
 from django.db import models
 
+from eve_esi import ESI
+
+
+class CharacterManager(models.Manager):
+    def get_from_db_or_esi(self, character_id):
+        try:
+            return Character.objects.get(id=character_id)
+        except Character.DoesNotExist:
+            character_data = ESI.get_client().request(
+                ESI['get_characters_character_id'](character_id=character_id)
+            ).data
+
+            character = Character(
+                id=character_id,
+                name=character_data['name']
+            )
+
+            character.save()
+
+            return character
+
 
 class Character(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=64, db_index=True, unique=True)
+
+    objects = CharacterManager()
 
 
 class Location(models.Model):
