@@ -71,12 +71,16 @@ def update_contracts():
 
         with transaction.atomic():
             for i in interesting:
-                issuer = Character.objects.get_from_db_or_esi(i['issuer_id'])
+                try:
+                    issuer = Character.objects.get_from_db_or_esi(i['issuer_id'])
 
-                if i['acceptor_id'] != 0:
-                    acceptor = Character.objects.get_from_db_or_esi(i['acceptor_id'])
-                else:
-                    acceptor = None
+                    if i['acceptor_id'] != 0:
+                        acceptor = Character.objects.get_from_db_or_esi(i['acceptor_id'])
+                    else:
+                        acceptor = None
+                # HACK: This could be more explicit
+                except KeyError:
+                    continue
 
                 Contract.objects.update_or_create(
                     id=i['contract_id'],
