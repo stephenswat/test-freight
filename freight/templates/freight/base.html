@@ -29,11 +29,26 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="{% url 'freight:contract_list' %}">Contracts</a>
+              <a class="nav-link" href="{% url 'freight:contract_list' %}">Contracts</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="{% url 'freight:calculator' %}">Calculator</a>
+              <a class="nav-link" href="{% url 'freight:calculator' %}">Calculator</a>
             </li>
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'eve_auth:login' %}">Add character</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{{ request.user.username }}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'eve_auth:login' %}">Log in</a>
+            </li>
+              {% endif %}
           </ul>
         </div>
       </div>

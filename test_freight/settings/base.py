@@ -60,3 +60,7 @@ USE_L10N = False
 USE_TZ = False
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = 'eve_auth:login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
