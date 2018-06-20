@@ -5,7 +5,7 @@ from eve_auth.models import Character
 
 
 SCOPE_NAMES = {
-    'read_contracts': 'esi-contracts.read_character_contracts.v1',
+    'read_contracts': 'esi-contracts.read_corporation_contracts.v1',
     'open_window': 'esi-ui.open_window.v1',
 }
 

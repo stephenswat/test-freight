@@ -6,6 +6,7 @@ INSTALLED_APPS = [
     'eve_auth',
     'eve_esi',
     'freight',
+    'huey.contrib.djhuey',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

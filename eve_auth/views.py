@@ -18,7 +18,7 @@ class ScraperLogin(UserPassesTestMixin, View):
     def get(self, request):
         return redirect(
             ESI.get_security().get_auth_uri(scopes=[
-                'esi-contracts.read_character_contracts.v1'
+                'esi-contracts.read_corporation_contracts.v1'
             ])
         )
 

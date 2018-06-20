@@ -1,4 +1,3 @@
-import itertools
 import datetime
 from esipy.exceptions import APIException
 
@@ -63,23 +62,6 @@ class Character(models.Model):
 
     def get_client(self):
         return ESI.get_client(self.get_security())
-
-    def get_contracts(self):
-        results = []
-
-        for page in itertools.count(start=1):
-            op = ESI['get_characters_character_id_contracts'](
-                character_id=self.character_id
-            )
-
-            req = self.get_client().request(op)
-
-            results += req.data
-
-            if page >= req.header['X-Pages'][0]:
-                break
-
-        return results
 
     class KeyDeletedException(Exception):
         pass
