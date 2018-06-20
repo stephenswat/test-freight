@@ -1,0 +1,56 @@
+[
+{
+    "model": "freight.route",
+    "pk": 1,
+    "fields": {
+        "start": 60008494,
+        "end": 1024004680659,
+        "price_per_m3": 1440
+    }
+},
+{
+    "model": "freight.route",
+    "pk": 2,
+    "fields": {
+        "start": 60008494,
+        "end": 1026293932410,
+        "price_per_m3": 720
+    }
+},
+{
+    "model": "freight.route",
+    "pk": 3,
+    "fields": {
+        "start": 60008494,
+        "end": 1027950728006,
+        "price_per_m3": 720
+    }
+},
+{
+    "model": "freight.route",
+    "pk": 4,
+    "fields": {
+        "start": 1024004680659,
+        "end": 60008494,
+        "price_per_m3": 1440
+    }
+},
+{
+    "model": "freight.route",
+    "pk": 5,
+    "fields": {
+        "start": 1026293932410,
+        "end": 60008494,
+        "price_per_m3": 720
+    }
+},
+{
+    "model": "freight.route",
+    "pk": 6,
+    "fields": {
+        "start": 1027950728006,
+        "end": 60008494,
+        "price_per_m3": 720
+    }
+}
+]

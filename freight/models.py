@@ -144,3 +144,26 @@ class Contract(models.Model):
             dst=self.end.short_name if self.end is not None else 'Unknown',
             volume=self.volume
         )
+
+
+class Route(models.Model):
+    start = models.ForeignKey(
+        Location,
+        models.CASCADE,
+        related_name='+',
+        db_index=True
+    )
+    end = models.ForeignKey(
+        Location,
+        models.CASCADE,
+        related_name='+',
+        db_index=True
+    )
+
+    price_per_m3 = models.IntegerField()
+
+    def __str__(self):
+        return "{org} to {dst}".format(
+            org=self.start.short_name,
+            dst=self.end.short_name
+        )
