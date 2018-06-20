@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from freight.models import Character, Location, Contract
+
+
+admin.site.register(Character)
+admin.site.register(Location)
+admin.site.register(Contract)
