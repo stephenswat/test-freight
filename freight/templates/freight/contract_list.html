@@ -16,6 +16,7 @@
         <tr>
             <th>Pickup</th>
             <th>Dropoff</th>
+            <th>Volume</th>
             <th>Reward</th>
             <th>Collateral</th>
             <th>TTC</th>
@@ -29,6 +30,7 @@
         <tr>
             <td>{{ c.start.short_name|default:"Unknown" }}</td>
             <td>{{ c.end.short_name|default:"Unknown" }}</td>
+            <td data-sort="{{ c.volume }}">{{ c.volume|floatformat:2 }} m&sup3;</td>
             <td data-sort="{{ c.reward }}">{{ c.reward|intword }}</td>
             <td data-sort="{{ c.collateral }}">{{ c.collateral|intword }}</td>
             <td>{{ c.days_to_complete }}</td>
