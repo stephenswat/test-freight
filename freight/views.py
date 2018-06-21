@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from django.views.generic.base import View, TemplateView
 from django.utils.decorators import method_decorator
@@ -14,7 +16,10 @@ class ContractListView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['contracts'] = (
             Contract.objects
-            .filter(status=Contract.STATUS_OUTSTANDING)
+            .filter(
+                status=Contract.STATUS_OUTSTANDING,
+                date_expired__gt=datetime.datetime.now()
+            )
         )
         return context
 
