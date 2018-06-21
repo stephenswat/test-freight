@@ -65,31 +65,25 @@ function collateral() {
     var size = parseFloat($("#m3").val());
     var collateral = parseFloat($("#collat").val());
 
-    var reward = (m3Rate * size) + (collateral * collateralRate);
-    var min_word = (5000000/1000000).toFixed(2) + " Million ISK";
+    var reward = Math.max(5000000, (m3Rate * size) + (collateral * collateralRate));
 
-    if (reward > 1000000000 || size > maxSize) {
-        document.getElementById("reward").innerHTML = "The fuck are you trying to move?  A Titan?";
-        document.getElementById("recomendation").innerHTML = "Split your contract nerd";
+    $("#reward").text(reward.toFixed(2).toString() + " (" + (reward.toFixed(2)/1000000).toFixed(2) + " Million ISK)");
+
+    if (size > maxSize) {
+        $("#recomendation").text("The fuck are you trying to move? A titan? Split your contract nerd");
     } else if (reward > 5000000) {
-        document.getElementById("reward").innerHTML = reward.toFixed(2).toString() + " (" + (reward.toFixed(2)/1000000).toFixed(2) + " Million ISK) ";
-        document.getElementById("recomendation").innerHTML = "None, go for it!";
+        $("#recomendation").text("None, go for it!");
     } else {
-        document.getElementById("reward").innerHTML = "5000000" + "(" + min_word + ")";
-        document.getElementById("recomendation").innerHTML = "Come on now, ain't nobody got time to move your shit for less than " + min_word;
+        $("#recomendation").text("Come on now, ain't nobody got time to move your shit for less than 5 million ISK");
     }
 
-    if (size > recomendedSize){
-        document.getElementById("recomendation").innerHTML = "Consider splitting your contract into chunks of less than 60k m3 for faster service.";
-    }
-
-    if (collateral > recomendedCollateral){
-        document.getElementById("recomendation").innerHTML = "Consider splitting your contract into chunks of less than 5b collateral for faster service.";
+    if (size > recomendedSize || collateral > recomendedCollateral){
+        $("#recomendation").text("Consider splitting your contract into smaller chunks for faster service.");
     }
 
     if (isNaN(collateral) || isNaN(size)){
-        document.getElementById("reward").innerHTML = "";
-        document.getElementById("recomendation").innerHTML = "Please try filling in all the fields, it's the least you can do after all";
+        $("#reward").text("");
+        $("#recomendation").text("Please try filling in all the fields, it's the least you can do after all");
     }
 }
 
