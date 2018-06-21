@@ -10,3 +10,7 @@ header {
 section {
   padding: 20px 0;
 }
+
+body {
+  overflow-y: scroll;
+}
