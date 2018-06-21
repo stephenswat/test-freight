@@ -69,17 +69,30 @@ def update_contracts():
             and x['assignee_id'] == settings.ALLIANCE_ID
         ]
 
+        char_set = set()
+
+        for i in interesting:
+            char_set.add(i['issuer_id'])
+
+            if i['acceptor_id'] != 0:
+                    char_set.add(i['acceptor_id'])
+
+        for unknown in char_set - set(Character.objects.values_list('id', flat=True)):
+            try:
+                Character.objects.get_from_db_or_esi(unknown)
+            except KeyError:
+                continue
+
         with transaction.atomic():
             for i in interesting:
                 try:
-                    issuer = Character.objects.get_from_db_or_esi(i['issuer_id'])
+                    issuer = Character.objects.get(id=i['issuer_id'])
 
                     if i['acceptor_id'] != 0:
-                        acceptor = Character.objects.get_from_db_or_esi(i['acceptor_id'])
+                        acceptor = Character.objects.get(id=i['acceptor_id'])
                     else:
                         acceptor = None
-                # HACK: This could be more explicit
-                except KeyError:
+                except Character.DoesNotExist:
                     continue
 
                 Contract.objects.update_or_create(
