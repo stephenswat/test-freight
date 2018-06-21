@@ -1,0 +1,48 @@
+{% extends "freight/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<header class="bg-primary text-white">
+    <div class="container text-center">
+    <h1>Leaderboard</h1>
+    <p class="lead">The best freighter pilots in the alliance</p>
+    </div>
+</header>
+
+
+<section>
+    <div class="container">
+        <h2>Most contracts completed</h2>
+
+        <ol>
+            {% for c in ranking_completed %}
+            <li>{{ c.name }} ({{ c.contracts_completed }} contracts)</li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+<section class="bg-light">
+    <div class="container">
+        <h2>Most volume moved</h2>
+
+        <ol>
+            {% for c in ranking_volume %}
+            <li>{{ c.name }} ({{ c.volume_moved|intword }} m&sup3;)</li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <h2>Lowest average completion time</h2>
+
+        <ol>
+            {% for c in ranking_ttc %}
+            <li>{{ c.name }} ({{ c.average_ttc }})</li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+{% endblock %}
