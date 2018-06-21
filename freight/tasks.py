@@ -59,7 +59,7 @@ def update_contracts():
                 allegiance['corporation_id'],
                 c.get_client()
             )
-        except Character.KeyDeletedException:
+        except AuthCharacter.KeyDeletedException:
             logger.warning('Scraper %d revoked their key.', c.id)
             continue
 
