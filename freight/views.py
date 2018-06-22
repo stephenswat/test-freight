@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.db.models import Count, Sum, Avg, Q, F, Subquery, OuterRef, ExpressionWrapper, fields
 from django.db.models.functions import Coalesce, Greatest
+from django.conf import settings
 
 from freight.models import Route, Contract, Character
 
@@ -48,6 +49,7 @@ class CalculatorView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['routes'] = Route.objects.all()
+        context['parameters'] = settings.FREIGHT_PARAMETERS
         return context
 
 

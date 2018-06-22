@@ -19,3 +19,11 @@ ESI_SECRET_KEY = ""
 ESI_USER_AGENT = ""
 
 ALLIANCE_ID = 498125261
+
+FREIGHT_PARAMETERS = {
+    "collateral_rate": 0.01,
+    "max_size": 300000,
+    "min_price": 5000000,
+    "recommended_collateral": 5000000000,
+    "recommended_size": 5000000000,
+}

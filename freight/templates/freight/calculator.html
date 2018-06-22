@@ -1,4 +1,5 @@
 {% extends "freight/base.html" %}
+{% load humanize %}
 
 {% block content %}
 <header class="bg-primary text-white">
@@ -32,7 +33,7 @@
         <div class="col-sm-6">
             <input type="text" id="m3" class="form-control" value="0" />
         </div>
-        <div class="col-sm-4">(300k max | 60k recomended)</div>
+        <div class="col-sm-4">({{ parameters.max_size|intword }} max | {{ paraemeters.recommended_size|intword}} recomended)</div>
         </div>
 
         <div class="row" style="margin:10px;">
@@ -40,7 +41,7 @@
         <div class="col-sm-6">
             <input type="text" id="collat" class="form-control" value="0" />
         </div>
-        <div class="col-sm-4">(Less than 5B recommended)</div>
+        <div class="col-sm-4">(Less than {{ parameters.recommended_collateral|intword }} recommended)</div>
         </div>
 
         <dl>
@@ -56,22 +57,23 @@
 {% block javascript %}
 <script>
 function collateral() {
-    var collateralRate = 0.01;
-    var maxSize = 300000;
-    var recomendedCollateral = 5000000000;
-    var recomendedSize = 5000000000;
+    var collateralRate = {{ parameters.collateral_rate }};
+    var maxSize = {{ parameters.max_size }};
+    var recomendedCollateral = {{ parameters.recommended_collateral }};
+    var recomendedSize = {{ parameters.recommended_size }};
+    var minPrice = {{ parameters.min_size }};
 
     var m3Rate = parseInt($("#route").val());
     var size = parseFloat($("#m3").val());
     var collateral = parseFloat($("#collat").val());
 
-    var reward = Math.max(5000000, (m3Rate * size) + (collateral * collateralRate));
+    var reward = Math.max(minPrice, (m3Rate * size) + (collateral * collateralRate));
 
     $("#reward").text(reward.toFixed(2).toString() + " (" + (reward.toFixed(2)/1000000).toFixed(2) + " Million ISK)");
 
     if (size > maxSize) {
         $("#recomendation").text("The fuck are you trying to move? A titan? Split your contract nerd");
-    } else if (reward > 5000000) {
+    } else if (reward > minPrice) {
         $("#recomendation").text("None, go for it!");
     } else {
         $("#recomendation").text("Come on now, ain't nobody got time to move your shit for less than 5 million ISK");
