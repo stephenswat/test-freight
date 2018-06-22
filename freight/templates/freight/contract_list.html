@@ -1,5 +1,6 @@
 {% extends "freight/base.html" %}
 {% load humanize %}
+{% load reward_percentage %}
 
 {% block content %}
 <header class="bg-primary text-white">
@@ -17,6 +18,7 @@
             <th>Pickup</th>
             <th>Dropoff</th>
             <th>Volume</th>
+            <th>Suggested</th>
             <th>Reward</th>
             <th>Collateral</th>
             <th>TTC</th>
@@ -31,7 +33,14 @@
             <td>{{ c.start.short_name|default:"Unknown" }}</td>
             <td>{{ c.end.short_name|default:"Unknown" }}</td>
             <td data-sort="{{ c.volume }}">{{ c.volume|floatformat:2 }} m&sup3;</td>
-            <td data-sort="{{ c.reward }}">{{ c.reward|intword }}</td>
+            <td data-sort="{{ c.suggested_reward }}">{{ c.suggested_reward|intword }}</td>
+            <td data-sort="{{ c.reward }}">{{ c.reward|intword }}
+                {% if c.reward >= c.suggested_reward %}
+                (<span class="text-success">{% reward_difference c.reward c.suggested_reward %}%</span>)
+                {% elif c.reward < c.suggested_reward %}
+                (<span class="text-danger">{% reward_difference c.reward c.suggested_reward %}%</span>)
+                {% endif %}
+            </td>
             <td data-sort="{{ c.collateral }}">{{ c.collateral|intword }}</td>
             <td>{{ c.days_to_complete }}</td>
             <td data-sort="{{ c.date_expired|date:'c' }}">{{ c.date_expired|naturaltime }}</td>

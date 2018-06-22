@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.db.models import Count, Sum, Avg, Q, F, Subquery, OuterRef, ExpressionWrapper, fields
+from django.db.models.functions import Coalesce, Greatest
 
 from freight.models import Route, Contract, Character
 
@@ -21,6 +22,22 @@ class ContractListView(TemplateView):
                 status=Contract.STATUS_OUTSTANDING,
                 date_expired__gt=datetime.datetime.now()
             )
+            .annotate(route_price_per_m3=Coalesce(
+                Subquery(
+                    Route.objects.filter(
+                        start=OuterRef('start_location'),
+                        end=OuterRef('end_location')
+                    ).values('price_per_m3')
+                ),
+                0
+            ))
+            .annotate(suggested_reward=(
+                Greatest(
+                    5000000.0,
+                    F('route_price_per_m3') * F('volume') + F('collateral') * 0.01,
+                    output_field=fields.FloatField()
+                )
+            ))
         )
         return context
 
