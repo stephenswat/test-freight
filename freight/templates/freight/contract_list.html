@@ -29,16 +29,22 @@
     </thead>
     <tbody>
         {% for c in contracts %}
-        <tr>
+        <tr class="">
             <td>{{ c.start.short_name|default:"Unknown" }}</td>
             <td>{{ c.end.short_name|default:"Unknown" }}</td>
             <td data-sort="{{ c.volume }}">{{ c.volume|floatformat:2 }} m&sup3;</td>
+            {% if c.route_price_per_m3 >= 0 %}
             <td data-sort="{{ c.suggested_reward }}">{{ c.suggested_reward|intword }}</td>
+            {% else %}
+            <td data-sort="-1">&ndash;</td>
+            {% endif %}
             <td data-sort="{{ c.reward }}">{{ c.reward|intword }}
-                {% if c.reward >= c.suggested_reward %}
-                (<span class="text-success">{% reward_difference c.reward c.suggested_reward %}%</span>)
-                {% elif c.reward < c.suggested_reward %}
-                (<span class="text-danger">{% reward_difference c.reward c.suggested_reward %}%</span>)
+                {% if c.route_price_per_m3 >= 0 %}
+                    {% if c.reward >= c.suggested_reward %}
+                    (<span class="text-success">{% reward_difference c.reward c.suggested_reward %}%</span>)
+                    {% elif c.reward < c.suggested_reward %}
+                    (<span class="text-danger">{% reward_difference c.reward c.suggested_reward %}%</span>)
+                    {% endif %}
                 {% endif %}
             </td>
             <td data-sort="{{ c.collateral }}">{{ c.collateral|intword }}</td>
@@ -58,7 +64,8 @@
 <script>
 $(document).ready( function () {
     $('#contracts').DataTable({
-        "pageLength": 100
+        "pageLength": 100,
+        "order": [[ 7, "asc" ]]
     });
 } );
 

@@ -30,7 +30,7 @@ class ContractListView(TemplateView):
                         end=OuterRef('end_location')
                     ).values('price_per_m3')
                 ),
-                0
+                -1
             ))
             .annotate(suggested_reward=(
                 Greatest(
