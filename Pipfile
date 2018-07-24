@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+huey = "==1.10.0"
+ipython = "==6.4.0"
+redis = "==2.10.6"
+whitenoise = "==3.3.1"
+Django = "==2.0.6"
+EsiPy = "==0.4.2"
+
+[requires]
+python_version = "3.6"
