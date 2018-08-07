@@ -37,6 +37,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'freight:calculator' %}">Calculator</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'freight:leaderboard' %}">Leaderboard</a>
+            </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'eve_auth:login' %}">Add character</a>
