@@ -13,7 +13,7 @@ class EntityManager(models.Manager):
             # You should really loop over the items in groups of 1000
             # But this way we'll catch 1000 new entities every time the task
             # runs and it will eventually complete.
-            ESI['post_universe_names'](ids=list(ids[:1000]))
+            ESI['post_universe_names'](ids=list(ids)[:1000])
         ).data
 
         with transaction.atomic():
