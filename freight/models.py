@@ -1,26 +1,30 @@
-from django.db import models
+from django.db import models, transaction
 
 from eve_esi import ESI
 
 
 class EntityManager(models.Manager):
-    def get_from_db_or_esi(self, entity_id):
-        try:
-            return Entity.objects.get(id=entity_id)
-        except Entity.DoesNotExist:
-            entity_data = ESI.get_client().request(
-                ESI['get_characters_character_id'](character_id=entity_id)
-            ).data
+    def bulk_resolve(self, ids):
+        if len(ids) == 0:
+            return
 
-            entity = Entity(
-                id=entity_id,
-                name=entity_data['name'],
-                type=Entity.TYPE_CHARACTER
-            )
+        data = ESI.get_client().request(
+            # HACK: Max items for this endpoint is 1000
+            # You should really loop over the items in groups of 1000
+            # But this way we'll catch 1000 new entities every time the task
+            # runs and it will eventually complete.
+            ESI['post_universe_names'](ids=list(ids[:1000]))
+        ).data
 
-            entity.save()
-
-            return entity
+        with transaction.atomic():
+            for entity in data:
+                Entity.objects.update_or_create(
+                    id=entity['id'],
+                    defaults={
+                        'name': entity['name'],
+                        'type': Entity.TYPE_MAP[entity['category']]
+                    }
+                )
 
 
 class Entity(models.Model):
@@ -33,6 +37,12 @@ class Entity(models.Model):
         (TYPE_CORPORATION, 'Corporation'),
         (TYPE_ALLIANCE, 'Alliance'),
     )
+
+    TYPE_MAP = {
+        'character': TYPE_CHARACTER,
+        'corporation': TYPE_CORPORATION,
+        'alliance': TYPE_ALLIANCE
+    }
 
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=64, db_index=True, unique=True)
