@@ -41,9 +41,11 @@
               <a class="nav-link" href="{% url 'freight:leaderboard' %}">Leaderboard</a>
             </li>
             {% if request.user.is_authenticated %}
+            {% comment %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'eve_auth:login' %}">Add character</a>
             </li>
+            {% endcomment %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Log out</a>
             </li>
