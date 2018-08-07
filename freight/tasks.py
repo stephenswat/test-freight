@@ -12,7 +12,7 @@ from huey.contrib.djhuey import db_periodic_task
 
 from eve_auth.models import Character as AuthCharacter
 from eve_esi import ESI
-from freight.models import Contract, Character
+from freight.models import Contract, Entity
 
 
 logger = logging.getLogger(__name__)
@@ -77,22 +77,22 @@ def update_contracts():
             if i['acceptor_id'] != 0:
                     char_set.add(i['acceptor_id'])
 
-        for unknown in char_set - set(Character.objects.values_list('id', flat=True)):
+        for unknown in char_set - set(Entity.objects.values_list('id', flat=True)):
             try:
-                Character.objects.get_from_db_or_esi(unknown)
+                Entity.objects.get_from_db_or_esi(unknown)
             except KeyError:
                 continue
 
         with transaction.atomic():
             for i in interesting:
                 try:
-                    issuer = Character.objects.get(id=i['issuer_id'])
+                    issuer = Entity.objects.get(id=i['issuer_id'])
 
                     if i['acceptor_id'] != 0:
-                        acceptor = Character.objects.get(id=i['acceptor_id'])
+                        acceptor = Entity.objects.get(id=i['acceptor_id'])
                     else:
                         acceptor = None
-                except Character.DoesNotExist:
+                except Entity.DoesNotExist:
                     continue
 
                 Contract.objects.update_or_create(

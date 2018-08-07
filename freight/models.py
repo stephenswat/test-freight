@@ -3,30 +3,42 @@ from django.db import models
 from eve_esi import ESI
 
 
-class CharacterManager(models.Manager):
-    def get_from_db_or_esi(self, character_id):
+class EntityManager(models.Manager):
+    def get_from_db_or_esi(self, entity_id):
         try:
-            return Character.objects.get(id=character_id)
-        except Character.DoesNotExist:
-            character_data = ESI.get_client().request(
-                ESI['get_characters_character_id'](character_id=character_id)
+            return Entity.objects.get(id=entity_id)
+        except Entity.DoesNotExist:
+            entity_data = ESI.get_client().request(
+                ESI['get_characters_character_id'](character_id=entity_id)
             ).data
 
-            character = Character(
-                id=character_id,
-                name=character_data['name']
+            entity = Entity(
+                id=entity_id,
+                name=entity_data['name'],
+                type=Entity.TYPE_CHARACTER
             )
 
-            character.save()
+            entity.save()
 
-            return character
+            return entity
 
 
-class Character(models.Model):
+class Entity(models.Model):
+    TYPE_CHARACTER = 0
+    TYPE_CORPORATION = 1
+    TYPE_ALLIANCE = 2
+
+    TYPE_CHOICES = (
+        (TYPE_CHARACTER, 'Character'),
+        (TYPE_CORPORATION, 'Corporation'),
+        (TYPE_ALLIANCE, 'Alliance'),
+    )
+
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=64, db_index=True, unique=True)
+    type = models.SmallIntegerField(choices=TYPE_CHOICES)
 
-    objects = CharacterManager()
+    objects = EntityManager()
 
     def __str__(self):
         return self.name
@@ -90,12 +102,12 @@ class Contract(models.Model):
     status = models.SmallIntegerField(db_index=True, choices=STATUS_CHOICES)
 
     issuer = models.ForeignKey(
-        Character,
+        Entity,
         models.CASCADE,
         related_name='issued_contracts'
     )
     acceptor = models.ForeignKey(
-        Character,
+        Entity,
         models.CASCADE,
         related_name='accepted_contracts',
         null=True

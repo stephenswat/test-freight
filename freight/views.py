@@ -9,7 +9,7 @@ from django.db.models import Count, Sum, Avg, Q, F, Subquery, OuterRef, Expressi
 from django.db.models.functions import Coalesce, Greatest
 from django.conf import settings
 
-from freight.models import Route, Contract, Character
+from freight.models import Route, Contract, Entity
 
 
 class ContractListView(TemplateView):
@@ -56,7 +56,7 @@ class CalculatorView(TemplateView):
 class LeaderboardView(View):
     def get(self, request):
         query = (
-            Character.objects
+            Entity.objects
             .filter(accepted_contracts__status=Contract.STATUS_FINISHED)
             .annotate(contracts_completed=Count(
                 'accepted_contracts',
