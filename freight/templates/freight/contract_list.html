@@ -1,5 +1,6 @@
 {% extends "freight/base.html" %}
 {% load humanize %}
+{% load short_natural_time %}
 {% load reward_percentage %}
 
 {% block content %}
@@ -49,9 +50,9 @@
             </td>
             <td data-sort="{{ c.collateral }}">{{ c.collateral|intword }}</td>
             <td>{{ c.days_to_complete }}</td>
-            <td data-sort="{{ c.date_expired|date:'c' }}">{{ c.date_expired|naturaltime }}</td>
+            <td data-sort="{{ c.date_expired|date:'c' }}">{{ c.date_expired|short_natural_time }}</td>
             <td>{{ c.issuer.name }}</td>
-            <td><button type="button" class="btn btn-primary" onclick="view_contract({{ c.id }});" {% if not request.user.is_authenticated %}disabled{% endif %}>In-game</button></td>
+            <td><button type="button" class="btn btn-primary btn-sm" onclick="view_contract({{ c.id }});" {% if not request.user.is_authenticated %}disabled{% endif %}>In-game</button></td>
         </tr>
         {% endfor %}
     </tbody>
