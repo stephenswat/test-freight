@@ -51,7 +51,7 @@
             <td>{{ c.days_to_complete }}</td>
             <td data-sort="{{ c.date_expired|date:'c' }}">{{ c.date_expired|naturaltime }}</td>
             <td>{{ c.issuer.name }}</td>
-            <td><button type="button" class="btn btn-primary" onclick="view_contract({{ c.id }});">In-game</button></td>
+            <td><button type="button" class="btn btn-primary" onclick="view_contract({{ c.id }});" {% if not request.user.is_authenticated %}disabled{% endif %}>In-game</button></td>
         </tr>
         {% endfor %}
     </tbody>
