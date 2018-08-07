@@ -25,5 +25,5 @@ FREIGHT_PARAMETERS = {
     "max_size": 300000,
     "min_price": 5000000,
     "recommended_collateral": 5000000000,
-    "recommended_size": 5000000000,
+    "recommended_size": 60000,
 }
