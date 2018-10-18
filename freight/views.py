@@ -48,7 +48,7 @@ class CalculatorView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['routes'] = Route.objects.all()
+        context['routes'] = Route.objects.order_by('start', 'end')
         context['parameters'] = settings.FREIGHT_PARAMETERS
         return context
 
