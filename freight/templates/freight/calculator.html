@@ -56,6 +56,11 @@
 
 {% block javascript %}
 <script>
+const clean_regex = /^\d+(?:\.\d+)?\s*$/i;
+const thousand_regex = /^\d+(?:\.\d+)?\s*k$/i;
+const million_regex = /^\d+(?:\.\d+)?\s*m(?:illion)?$/i;
+const billion_regex = /^\d+(?:\.\d+)?\s*b(?:illion)?$/i;
+
 function collateral() {
     var collateralRate = {{ parameters.collateral_rate }};
     var maxSize = {{ parameters.max_size }};
@@ -64,8 +69,36 @@ function collateral() {
     var minPrice = {{ parameters.min_price }};
 
     var m3Rate = parseInt($("#route").val());
-    var size = parseFloat($("#m3").val());
-    var collateral = parseFloat($("#collat").val());
+
+    var size;
+    var size_text = $("#m3").val();
+
+    if (size_text.match(billion_regex) != null) {
+        size = 1000000000 * parseFloat(size_text);
+    } else if (size_text.match(million_regex) != null) {
+        size = 1000000 * parseFloat(size_text);
+    } else if (size_text.match(thousand_regex) != null) {
+        size = 1000 * parseFloat(size_text);
+    } else if (size_text.match(clean_regex) != null) {
+        size = parseFloat(size_text);
+    } else {
+        size = NaN;
+    }
+
+    var collateral;
+    var collateral_text = $("#collat").val();
+
+    if (collateral_text.match(billion_regex) != null) {
+        collateral = 1000000000 * parseFloat(collateral_text);
+    } else if (collateral_text.match(million_regex) != null) {
+        collateral = 1000000 * parseFloat(collateral_text);
+    } else if (collateral_text.match(thousand_regex) != null) {
+        collateral = 1000 * parseFloat(collateral_text);
+    } else if (collateral_text.match(clean_regex) != null) {
+        collateral = parseFloat(collateral_text);
+    } else {
+        collateral = NaN;
+    }
 
     var reward = Math.max(minPrice, (m3Rate * size) + (collateral * collateralRate));
 
@@ -85,7 +118,7 @@ function collateral() {
 
     if (isNaN(collateral) || isNaN(size)){
         $("#reward").text("");
-        $("#recomendation").text("Please try filling in all the fields, it's the least you can do after all");
+        $("#recomendation").text("Please try filling in all the fields correctly, it's the least you can do after all");
     }
 }
 
