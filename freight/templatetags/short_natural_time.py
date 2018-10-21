@@ -61,21 +61,6 @@ def shortnaturaldelta(value):
     else:
         return "%d minutes" % (minutes)
 
-    if days < 1:
-        if seconds < 120:
-            return "1m"
-        elif 120 <= seconds < 3600:
-            return "%dm" % (seconds // 60)
-        elif 3600 <= seconds < 3600*2:
-            return "1h"
-        elif 3600 < seconds:
-            return "%dh" % (seconds // 3600)
-    else:
-        if days == 1:
-            return "1d"
-        else:
-            return "%dd" % days
-
 @register.filter
 def short_natural_time(value):
     now = _now()
