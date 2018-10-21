@@ -54,8 +54,12 @@ def shortnaturaldelta(value):
 
     minutes = (abs(delta.seconds) // (60)) % 60
 
-    if days >= 1:
+    if days == 1:
         return "%d day, %d hours" % (days, hours)
+    elif days >= 1:
+        return "%d days, %d hours" % (days, hours)
+    elif hours == 1:
+        return "%d hour" % (hours)
     elif hours >= 1:
         return "%d hours" % (hours)
     else:
