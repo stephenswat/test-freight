@@ -65,23 +65,23 @@ class LeaderboardView(View):
             .annotate(volume_moved=Sum(
                 'accepted_contracts__volume',
             ))
-            .annotate(average_ttc=Avg(
-                Subquery(
-                    Contract.objects
-                    .filter(
-                        status=Contract.STATUS_FINISHED,
-                        acceptor=OuterRef('id')
-                    )
-                    .annotate(
-                        ttc=ExpressionWrapper(
-                            F('date_completed') - F('date_accepted'),
-                            output_field=fields.DurationField()
-                        )
-                    )
-                    .values('ttc')
-                ),
-                output_field=fields.DurationField()
-            ))
+            # .annotate(average_ttc=Avg(
+            #     Subquery(
+            #         Contract.objects
+            #         .filter(
+            #             status=Contract.STATUS_FINISHED,
+            #             acceptor=OuterRef('id')
+            #         )
+            #         .annotate(
+            #             ttc=ExpressionWrapper(
+            #                 F('date_completed') - F('date_accepted'),
+            #                 output_field=fields.DurationField()
+            #             )
+            #         )
+            #         .values('ttc')
+            #     ),
+            #     output_field=fields.DurationField()
+            # ))
         )
 
         return render(
@@ -90,7 +90,7 @@ class LeaderboardView(View):
             context={
                 'ranking_completed': query.order_by('-contracts_completed')[:5],
                 'ranking_volume': query.order_by('-volume_moved')[:5],
-                'ranking_ttc': query.order_by('average_ttc')[:5],
+                # 'ranking_ttc': query.order_by('average_ttc')[:5],
             }
         )
 
