@@ -31,15 +31,25 @@
         <div class="row" style="margin:10px;">
         <div class="col-sm-2">Contract Size:</div>
         <div class="col-sm-6">
-            <input type="text" id="m3" class="form-control" value="0" />
+            <div class="input-group add-on">
+                <input type="text" id="m3" class="form-control" value="0" />
+                <div class="input-group-append">
+                    <div class="input-group-text">m³</div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4">({{ parameters.max_size|intword }} max | {{ parameters.recommended_size|intword}} recomended)</div>
+        <div class="col-sm-4">({{ parameters.max_size|intword }} max | {{ parameters.recommended_size|intword}} recommended)</div>
         </div>
 
         <div class="row" style="margin:10px;">
         <div class="col-sm-2">Collateral:</div>
         <div class="col-sm-6">
-            <input type="text" id="collat" class="form-control" value="0" />
+            <div class="input-group add-on">
+                <input type="text" id="collat" class="form-control" value="0" />
+                <div class="input-group-append">
+                    <div class="input-group-text">ISK</div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-4">(Less than {{ parameters.recommended_collateral|intword }} recommended)</div>
         </div>
